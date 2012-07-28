@@ -1,0 +1,54 @@
+Petrol prices adjusted for inflation (Perth, Western Australia)
+========================================================
+
+The thought for this sprung to mind when I saw petrol drop below $1.20 per litre the other day, and it made me think, I remember paying that when I got to Australia 4.5 years ago. Fuel prices are listed online here, so I went to the site for a nosey at their archiving and they have a reasonably comprehensive archive of data - [WA historic fuel prices](http://www.fuelwatch.wa.gov.au/fuelwatch/pages/public/historicalPriceSearch.jspx). All that was left to do was hunt out the inflation (CPI) data, which was also readily available - [Australian inflation data](http://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?form=auscpi).
+
+<!-- more -->
+
+The fuel price data was available as a monthly average [for the Perth Metro area] (http://goo.gl/maps/NwcYS). The inflation data was available quaterly. Given the fuel data started in 2001, I thought it made sense to show things in 2001 dollars, so I divided the indices by the 2001 indices to make this the baseline. For manipulation purposes I converted the month data into date data, using the 1st of the month for the day in all cases. Then the 'closest' inflation index was merged onto the fuel price, which was then converted into 2001 dollars, and graphed.
+
+I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github]().
+
+system("pandoc -s petrol_prices.md -o petrol_prices.html")
+
+Credit also to [this post](http://jeromyanglim.blogspot.com.au/2012/05/getting-started-with-r-markdown-knitr.html) from Jeromy as I used some of the finer points of his code as a guide to getting this up.
+
+## Prepare for analyses
+```{r results='hide'}
+library(reshape)
+library(RCurl)
+
+# Pull data down from csv stored on github
+fuel <- read.csv(textConnection(getURL("https://raw.github.com/nzcoops/datasets/master/fuel_prices.csv")))
+inf <- read.csv(textConnection(getURL("https://raw.github.com/nzcoops/datasets/master/au_cpi.csv")))
+
+# examine the data
+head(fuel); tail(fuel)
+head(inf); tail(inf)
+str(inf); str(inf)
+
+# format the dates
+fuel$date <- as.Date(paste0("01-", fuel$month, "-", fuel$year), format="%d-%b-%Y")
+inf$date <- as.Date(paste0("01-", inf$month, "-", inf$year), format="%d-%b-%Y")
+
+# match the closest quarterly inflation figure to the fuel price date, just the position index
+fuel$closest <- sapply(fuel$date, function(x) which(abs(as.numeric(inf$date)-as.numeric(x)) == min(abs(as.numeric(inf$date)-as.numeric(x)))))
+# convert the inflation indices to be relative to 2001 dollars
+inf$cpi01 <- round(inf$cpi/inf$cpi[1] *100,2)
+# pull the inflation figure into the fuel data frame
+fuel$inf <- sapply(fuel$closest, function(x) inf$cpi01[x])
+# calculate the 'real' price of the fuel
+fuel$rprice <- fuel$price / fuel$inf * 100
+
+# melt the data so it slides right into ggplot
+mfuel <-  melt(fuel, id=c("month","year","closest","inf","date"))
+mfuel$variable <- factor(mfuel$variable, labels=c("Nominal (pump/actual) Price","Adjusted (to 2001 $) Price"))
+```
+## And here's the plot
+```{r petrol_price_plot1, fig.width=10, fig.height=6}
+ggplot(mfuel, aes(x=date, y=value, group=variable)) + geom_line(aes(colour=variable)) +
+    labs(x="Date",y="Price", colour="") + opts(title="Perth Metro petrol prices over time")
+```
+So you can see, today we're actually paying relatively less for fuel than we did for through the middle of the 2000's decade, but over the past few years it has been cheaper on average than it is now. Who knew. 
+
+This might have been done before but I couldn't find a similar plot out there.
