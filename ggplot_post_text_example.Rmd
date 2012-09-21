@@ -1,0 +1,36 @@
+Simple plot with text boxes
+========================================================
+
+Was doing a little presentation to our research group and had to explain the difficulties of 'collapsing' longitudinal data into a single measure when the Y var is quite variable. For the particular Y var of interest, it represents burden of disease, so a high Y var for a long time is indicative of high risk, compared to a low value for a similar time. Hence you have issues using with the mean, or the AUC. There's a lot more to it than that, but that's the gist of the point of this graph. Sharing the code cause it might be useful to someone else at some point.
+
+<!-- more -->
+
+system("pandoc -s petrol_prices.md -o petrol_prices.html")
+
+## Set up dummy data
+```{r results='hide'}
+library(ggplot2)
+
+# Set up the data and text separately
+dat <- data.frame(
+    frame=c(rep("A",6), rep("B",2), rep("C",11), rep("D",11)),
+    y=c(rep(10,6), rep(10,2), rep(5,11), seq(5,10,0.5)),
+    x=c(seq(13,18,1), seq(17,18,1), seq(8,18,1), seq(8,18,1))
+)
+
+txt <- data.frame(
+    label=c("Mean - 10","AUC - 50","Mean - 10","AUC - 1","Mean - 5","AUC - 50","Mean - 7.5","AUC - 75"),
+    x=rep(17.5,8),
+    y=rep(c(13.5,12),4),
+    frame=c(rep("A",2), rep("B",2), rep("C",2), rep("D",2))
+)
+```
+
+## And here's the plot
+```{r text_example, fig.width=8, fig.height=8}
+ggplot(data=dat, aes(x=x,ymax=y, ymin=0)) + geom_ribbon(data=dat) +
+    facet_wrap(~frame) + scale_y_continuous(limits=c(-0.1,14)) + 
+    scale_x_continuous(limits=c(5,20)) +
+    labs(y="Y var", x="X var") +
+    geom_text(data=txt, aes(y=y, label=label))
+```
