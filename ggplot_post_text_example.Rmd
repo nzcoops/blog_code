@@ -5,6 +5,8 @@ Was doing a little presentation to our research group and had to explain the dif
 
 <!-- more -->
 
+I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github](https://github.com/nzcoops/blog_code/blob/master/ggplot_post_text_example.Rmd).
+
 system("pandoc -s petrol_prices.md -o petrol_prices.html")
 
 ## Set up dummy data
