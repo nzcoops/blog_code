@@ -58,7 +58,7 @@ txt <- data.frame(
 ```
 
 ## And here's the plot
-```{r text_example, fig.width=8, fig.height=8, tidy=F}
+```{r nfl_picker_1, fig.width=8, fig.height=8, tidy=F}
 # actual plot
 ggplot(df, aes(x=x,y=y)) + geom_blank() + 
     annotation_custom(char, xmin=0, xmax=40, ymin=50, ymax=85) + 
@@ -82,6 +82,6 @@ ggplot(df, aes(x=x,y=y)) + geom_blank() +
 
 Feedback?
 
-I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github](https://github.com/nzcoops/blog_code/blob/master/ggplot_post_text_example.Rmd).
+I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github](https://github.com/nzcoops/blog_code/blob/master/nfl_team_picker_example.Rmd).
 
-system("pandoc -s petrol_prices.md -o petrol_prices.html")
+system("pandoc -s nfl_team_picker_example.md -o nfl_team_picker_example.html")
