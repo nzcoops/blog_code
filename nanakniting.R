@@ -1,4 +1,6 @@
 library(knitr)
-
+setwd("/Users/mcooper/Documents/git/blog_code")
 knit("petrol_prices.Rmd")
 system("pandoc -s petrol_prices.md -o petrol_prices.html")
+knit("ggplot_post_text_example.Rmd")
+system("pandoc -s ggplot_post_text_example.md -o ggplot_post_text_example.html")
