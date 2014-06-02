@@ -63,9 +63,9 @@ ggplot(dat, aes(x=time, y=bgl, group=order)) +
   facet_wrap( ~ id)
 ```
 
-I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github]().
+I wrote this post in [RStudio](http://rstudio.org/download/) using the [R Markdown](http://www.rstudio.org/docs/authoring/using_markdown) language and then [knitr](http://yihui.name/knitr/) to turn in into markdown (.md), and then [pandoc](http://johnmacfarlane.net/pandoc/) to turn it into html. The original file is available here on [github](https://raw.githubusercontent.com/nzcoops/blog_code/master/shading_between_the_lines.Rmd).
 
-system("pandoc -s petrol_prices.md -o petrol_prices.html")
+system("pandoc -s shading_between_the_lines.md -o shading_between_the_lines.html")
 
 As an aside, the mgroup function might seem like overkill, but it was a bit tricky, as when the lines cross you have to be careful to get the right 'hourglass' orientation, either vertical or horizontal.
 
