@@ -1,7 +1,7 @@
 Shading between two lines - ggplot
 ========================================================
 
-First one to say geom_ribbon loses. I was plotting some data for a colleague, had two lines (repeated experiment) per person (time on the x axis) facetted by id, I thought it'd be nice to shade the area between the two lines so that when they were deviating you'd see a large shaded area, and when they were close there would be little shading, just to aid the visual of the separation between repeats. I thought this would be trival, and geom_ribbon would do the trick, alas, some of the lines crossed so that didn't pan out. Ignoring the 'experiment' variable and reordering to the data to track the max and min values at each time point doesn't work, because when they cross you end up with a box around the cross, rather than it perimeter following the lines. 
+First one to say geom_ribbon loses. I was plotting some data for a colleague, had two lines (repeated experiment) per person (time on the x axis) facetted by id, I thought it'd be nice to shade the area between the two lines so that when they were deviating you'd see a large shaded area, and when they were close there would be little shading, just to aid the visual of the separation between repeats. I thought this would be trival, and geom_ribbon would do the trick, alas, some of the lines crossed so that didn't pan out. Ignoring the 'experiment/order' variable and reordering the data to track the max and min values at each time point doesn't work, because when they cross you end up with a box around the cross, rather the inside region being shaded.
 
 <!-- more -->
 
