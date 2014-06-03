@@ -34,7 +34,7 @@ mperson <- function(x){
   return(x)
 }
 dat2 <- ddply(dat, .(id), mperson)
-h(dat)
+h(dat2)
 
 # this block is run within each person and 'block (group)' of 4 rows (each polygon)
 # essentially this is to get the rows in the correct order, so that the geom_polygon function
@@ -52,7 +52,7 @@ mgroup <- function(x){
   } 
 }
 dat2 <- ddply(dat2, .(id,group), mgroup)
-h(dat)
+h(dat2)
 ```
 ## And here's the plot
 ```{r shading_plot1, fig.width=10, fig.height=5}
